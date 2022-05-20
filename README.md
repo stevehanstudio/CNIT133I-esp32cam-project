@@ -2,36 +2,13 @@
 
 This project was created for the course [CNIT 133I IoT and XR](https://www.coursicle.com/ccsf/courses/CNIT/133I/) taught by [Professor Da Silva](https://cdasilva.info/) [CCSF](https://www.ccsf.edu/).  The project consist of both hardware and software.  The hardware consist of:
 
-ESP32-CAM (AI Thinker)
-Arudino Uno
+1. ESP32-CAM (AI Thinker)
+2. Arudino Uno
 
 Software consist of:
 
-Frontend web app made in React/Typescript
-[ESP32 Camera Web Server](https://github.com/easytarget/esp32-cam-webserver) by Easytarget
-
-## Project Folder Structure for React Web App
-```
-├── README.md # This file.
-├── .gitignore # Git untracked files.
-├── package.json # npm package manager configuration file for project
-├── package-lock.json # package lock file auto generated npm package manager
-├── src
-│   ├── App.js.jpg # Main app.
-
-└──
-    ├──
-    ├──
-    └──
-
-
-```
-## Installation Instructions
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Frontend web app made in React
+2. [ESP32 Camera Web Server](https://github.com/easytarget/esp32-cam-webserver) by [Easytarget](https://github.com/easytarget)
 
 ## Resources
 
