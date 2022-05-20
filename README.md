@@ -1,4 +1,4 @@
-# Video From ESP32-CAM
+# Video From the ESP32-CAM
 
 This project was created for the course [CNIT 133I IoT and XR](https://www.coursicle.com/ccsf/courses/CNIT/133I/) taught by [Professor Da Silva](https://cdasilva.info/) [CCSF](https://www.ccsf.edu/).  The project consist of both hardware and software.  The hardware consist of:
 
@@ -15,6 +15,7 @@ Frontend web app made in React/Typescript
 ├── README.md # This file.
 ├── .gitignore # Git untracked files.
 ├── package.json # npm package manager configuration file for project
+├── package-lock.json # package lock file auto generated npm package manager
 ├── src
 │   ├── App.js.jpg # Main app.
 
