@@ -1,0 +1,41 @@
+$primary: red;
+$secondary: green;
+$dark: #300;
+$light: red;
+$success: #0fa;
+$info: #555;
+$warning: yellow;
+$danger: red;
+
+// body {
+//   background-color: black;
+//   color: white;
+//   height: 100vh;
+//   width: 100%;
+// }
+
+.App {
+  background-color: black;
+  color: white;
+  height: 100vh;
+  width: 100vw;
+}
+
+Container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  padding: 1.6rem;
+  text-align: center;
+}
+
+$theme-colors: (
+    "info": tomato,
+    "danger": teal
+);
+
+@import "~bootstrap/scss/bootstrap.scss"
+
