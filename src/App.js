@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col, Container, Form } from 'react-bootstrap'
 import RangeSlider from 'react-bootstrap-range-slider'
-import './custom.scss'
-// import './App.css'
+import './App.scss'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -58,14 +57,15 @@ function App() {
 		setSaturation(newSaturdation)
 
 		fetch(`${CAMERA_URL}/control?var=saturation&val=${newSaturdation}`)
-			.then(() => {
-				console.log('Saturation Change Success!')
+			.then(res => {
+				if (!res.ok) throw Error('Server error')
+				return console.log('Saturation Change Success!')
 			})
 			.catch(err => {
 				console.log('Error changing saturation,', err)
 				setSaturation(oldSaturation)
-				toast.error('Problem with ESP32-CAM.  Saturation not changed', {
-					autoClose: 3000,
+				return toast.error('Problem with ESP32-CAM.  Saturation not changed', {
+					autoClose: 4000,
 				})
 			})
 	}
@@ -85,7 +85,7 @@ function App() {
 				console.log('Error changing contrast,', err)
 				setContrast(oldContrast)
 				toast.error('Contrast not changed', {
-					autoClose: 3000,
+					autoClose: 4000,
 				})
 			})
 	}
@@ -103,7 +103,7 @@ function App() {
 			.catch(err => {
 				console.log('Error changing special effect,', err)
 				toast.error('Special Effect not changed', {
-					autoClose: 3000,
+					autoClose: 4000,
 				})
 			})
 	}
@@ -131,7 +131,7 @@ function App() {
 								<RangeSlider
 									// className='m-3'
 									value={brightness}
-									step='0.1'
+									step={0.1}
 									onChange={handleBrightnessChange}
 									// tooltipStyle="background: blue"
 									min={MIN_BRIGHTNESS}
@@ -143,7 +143,7 @@ function App() {
 								<RangeSlider
 									// className='mb-3'
 									value={saturation}
-									step='0.1'
+									step={0.1}
 									onChange={handleSaturationChange}
 									min={MIN_SATURATION}
 									max={MAX_SATURATION}
@@ -154,7 +154,7 @@ function App() {
 								<RangeSlider
 									// className='mb-3'
 									value={contrast}
-									step='0.1'
+									step={0.1}
 									onChange={handleContrastChange}
 									min={MIN_CONTRAST}
 									max={MAX_CONTRAST}
