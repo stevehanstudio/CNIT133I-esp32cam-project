@@ -24,7 +24,7 @@ Frontend web app made in React/Typescript
     └──
 
 
-
+```
 ## Installation Instructions
 
 ### `npm start`
