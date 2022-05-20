@@ -116,13 +116,12 @@ function App() {
 				</Row>
 				<Row>
 					<Col lg={8}>
-						Video
-						{/* <img
+						<img
 							src={`${CAMERA_URL}:81/`}
 							width='640'
 							height='480'
 							alt=''
-						/> */}
+						/>
 					</Col>
 					<Col lg={4}>
 						<Form className='p-1'>
