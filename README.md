@@ -12,7 +12,7 @@ Software consist of:
 
 ## Presentation and Demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/wtY6prGZSow" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![CNIT 133I ESP32 CAM Project presentation and demo](https://img.youtube.com/vi/wtY6prGZSow/0.jpg)](https://www.youtube.com/watch?v=wtY6prGZSow)
 
 ## Resources
 
