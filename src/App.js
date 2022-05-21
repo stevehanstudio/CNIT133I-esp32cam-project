@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Row, Col, Container, Form } from 'react-bootstrap'
 import RangeSlider from 'react-bootstrap-range-slider'
 import './App.scss'
@@ -26,87 +26,47 @@ const SpecialEffects = [
 ]
 
 function App() {
-	const [brightness, setBrightness] = useState(0)
-	const [saturation, setSaturation] = useState(0)
-	const [contrast, setContrast] = useState(0)
-	const [specialEffect, setSpecialEffect] = useState(0)
+	const [state, setState] = useState({
+		brightness: 0,
+		saturation: 0,
+		contrast: 0,
+		special_effect: 0,
+	})
 
-	const handleBrightnessChange = (e) => {
-		const newBrightness = e.target.value
-		const oldBrightness = brightness
+	// Reset states on the ESP32 Camera Server.  A limition of the API is only one value can
+	// be changed per GET request
+	useEffect(() => {
+		(async function() {
+			try {
+				await fetch(`${CAMERA_URL}/control?var=brightness&val=0`)
+				await	fetch(`${CAMERA_URL}/control?var=contrast&val=0`)
+				await	fetch(`${CAMERA_URL}/control?var=saturation&val=0`)
+				await	fetch(`${CAMERA_URL}/control?var=special_effect&val=0`)
+				console.log('Finished resetting')
+			} catch {
+				throw Error('Error resetting')
+			}
+		})()
+	}, [])
 
-		setBrightness(newBrightness)
+	const handleValueChange = (e, attr) => {
+		const newValue = e.target.value
+		const oldValue = state[attr]
+		setState({ ...state, [attr]: newValue })
 
-		fetch(`${CAMERA_URL}/control?var=brightness&val=${newBrightness}`)
+		fetch(`${CAMERA_URL}/control?var=${attr}&val=${newValue}`)
 			.then(() => {
-				console.log('Brightness Change Success!')
+				console.log(`${attr} change success!`)
 			})
 			.catch(err => {
-				console.log('Error changing brightness,', err)
-				setBrightness(oldBrightness)
-				toast.error('Problem with ESP32-CAM.  Brightness not changed.', {
-					autoClose: 3000
+				console.log(`Error changing ${attr},`, err)
+				setState({ ...state, [attr]: oldValue })
+				toast.error(`Problem with ESP32-CAM.  ${attr} not changed.`, {
+					autoClose: 3000,
 				})
 			})
 	}
 
-	const handleSaturationChange = e => {
-		const newSaturdation = e.target.value
-		const oldSaturation = saturation
-
-		setSaturation(newSaturdation)
-
-		fetch(`${CAMERA_URL}/control?var=saturation&val=${newSaturdation}`)
-			.then(res => {
-				if (!res.ok) throw Error('Server error')
-				return console.log('Saturation Change Success!')
-			})
-			.catch(err => {
-				console.log('Error changing saturation,', err)
-				setSaturation(oldSaturation)
-				return toast.error('Problem with ESP32-CAM.  Saturation not changed', {
-					autoClose: 4000,
-				})
-			})
-	}
-
-	const handleContrastChange = e => {
-		const newContrast = e.target.value
-		const oldContrast = contrast
-
-		setContrast(newContrast)
-
-		fetch(`${CAMERA_URL}/control?var=contrast&val=${newContrast}`)
-			.then(() => {
-				setContrast(newContrast)
-				console.log('Contrast Change Success!')
-			})
-			.catch(err => {
-				console.log('Error changing contrast,', err)
-				setContrast(oldContrast)
-				toast.error('Contrast not changed', {
-					autoClose: 4000,
-				})
-			})
-	}
-
-	const handleSpecialEffectChange = e => {
-		const newSpecialEffect = e.target.value
-
-		fetch(
-			`${CAMERA_URL}/control?var=special_effect&val=${newSpecialEffect}`
-		)
-			.then(() => {
-				setSpecialEffect(newSpecialEffect)
-				console.log('Special Effect Change Success!')
-			})
-			.catch(err => {
-				console.log('Error changing special effect,', err)
-				toast.error('Special Effect not changed', {
-					autoClose: 4000,
-				})
-			})
-	}
 	return (
 		<div className='App'>
 			<ToastContainer theme='colored' />
@@ -114,7 +74,7 @@ function App() {
 				<Row>
 					<h1>Video from ESP32-Cam</h1>
 				</Row>
-				<Row>
+				<Row className='mt-5'>
 					<Col lg={8}>
 						<img
 							src={`${CAMERA_URL}:81/`}
@@ -125,51 +85,51 @@ function App() {
 					</Col>
 					<Col lg={4}>
 						<Form className='p-1'>
-							<Form.Group className='p-1'>
+							<Form.Group className='p-1 mt-4'>
 								<Form.Label>Brightness</Form.Label>
 								<RangeSlider
-									// className='m-3'
-									value={brightness}
-									step={0.1}
-									onChange={handleBrightnessChange}
-									// tooltipStyle="background: blue"
+									value={state['brightness']}
+									step={1}
+									onChange={e => handleValueChange(e, 'brightness')}
 									min={MIN_BRIGHTNESS}
 									max={MAX_BRIGHTNESS}
 									tooltipPlacement='bottom'
 									tooltip='auto'
 								/>
-								<Form.Label className='mt-5'>Saturation</Form.Label>
-								<RangeSlider
-									// className='mb-3'
-									value={saturation}
-									step={0.1}
-									onChange={handleSaturationChange}
-									min={MIN_SATURATION}
-									max={MAX_SATURATION}
-									tooltipPlacement='bottom'
-									tooltip='auto'
-								/>
 								<Form.Label className='mt-5'>Contrast</Form.Label>
 								<RangeSlider
-									// className='mb-3'
-									value={contrast}
-									step={0.1}
-									onChange={handleContrastChange}
+									value={state['contrast']}
+									step={1}
+									onChange={e => handleValueChange(e, 'contrast')}
 									min={MIN_CONTRAST}
 									max={MAX_CONTRAST}
 									tooltipPlacement='bottom'
 									tooltip='auto'
 								/>
+								<Form.Label className='mt-5'>Saturation</Form.Label>
+								<RangeSlider
+									value={state['saturation']}
+									step={1}
+									onChange={e => handleValueChange(e, 'saturation')}
+									min={MIN_SATURATION}
+									max={MAX_SATURATION}
+									tooltipPlacement='bottom'
+									tooltip='auto'
+								/>
+								<Form.Label className='mt-5'>Special Effect</Form.Label>
 								<Form.Control
 									as='select'
-									value={specialEffect}
-									className='mt-5'
-									onChange={handleSpecialEffectChange}
+									value={state['specialEffect']}
+									onChange={e =>
+										handleValueChange(e, 'special_effect')
+									}
 								>
-									<option>{SpecialEffects[specialEffect]}</option>
+									<option>
+										{SpecialEffects[state['special_effect']]}
+									</option>
 									{SpecialEffects.map(
 										(item, index) =>
-											index !== +specialEffect && (
+											index !== state['special_effect'] && (
 												<option value={index} key={index}>
 													{item}
 												</option>
